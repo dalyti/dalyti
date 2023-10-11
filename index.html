@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<form action="mailto:ctosc@justice.wa.gov.au" method="post" enctype="text/plain">
+    <!-- ... Your form content ... -->
+    
+    
+<head>
+    <style>
+        #submit-button {
+      background-color: black;
+      color: white;
+      font-weight: bold;
+      border: none;
+      padding: 15px 25px;
+      margin-right: 20px;  /* Adds a gap between the buttons */
+    }
+    #reset-button {
+      background-color: grey;
+      color: black;
+      border: none;
+      padding: 15px 25px;
+    }
+  </style>
+    <script>
+        function toggleOtherInput(selectElement, inputElementId) {
+      var inputElement = document.getElementById(inputElementId);
+      if(selectElement.value === 'Other') {
+        inputElement.style.display = 'inline';
+      } else {
+        inputElement.style.display = 'none';
+      }
+    }
+
+    function toggleTextbox(checkbox, textareaId) {
+      var textarea = document.getElementById(textareaId);
+      if(checkbox.checked) {
+        textarea.style.display = 'block';
+      } else {
+        textarea.style.display = 'none';
+      }
+    }
+  </script>
+</head>
+
+<body>
+    <h3>SUPREME COURT OF WESTERN AUSTRALIA</h3>
+    <h1><u>Video Link Booking Request</u></h1>
+    <br>
+    <h3><u>Details of Attending</u></h3>
+
+
+    <label for="location">LOCATION: </label>
+    <input type="text" id="location" name="location" required placeholder="e.g. Melbourne, Australia / New York, USA." size="50"></br></br>
+
+    <label>NUMBER OF PEOPLE ATTENDING:</label>
+    <select id="numPeople" onchange="generateInputs()">
+        <option value="0">-</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+</br></br>
+    <div id="dynamicInputs"></div>
+
+    <script>
+        // For dynamically creating input fields
+
+        function generateInputs() {
+            const numberOfPeople = document.getElementById("numPeople").value;
+            const container = document.getElementById("dynamicInputs");
+            let generatedHTML = "";
+
+            for (let i = 0; i < numberOfPeople; i++) {
+                generatedHTML += `
+<div>
+    <label for="personAttending${i + 1}" style="display:inline-block; width:80px;">Name:</label>
+    <input type="text" id="personAttending${i + 1}" name="personAttending${i + 1}" required size="30" placeholder="e.g. John Smith"></br>
+    <label for="phoneNumber${i + 1}" style="display:inline-block; width:80px;">Phone:</label>
+    <input type="tel" id="phoneNumber${i + 1}" name="phoneNumber${i + 1}" pattern="[0-9]{10}" required size="30" placeholder="0412 345 678"></br>
+    <label for="email${i + 1}" style="display:inline-block; width:80px;">Email:</label>
+    <input type="email" id="email${i + 1}" name="email${i + 1}" required size="30" placeholder="john.smith@outlook.com.au"></br>
+</div>
+<br/>`;
+            }
+            container.innerHTML = generatedHTML;
+        }
+
+        // For changing placeholder, in case you'll use it elsewhere
+        function changePlaceholder() {
+            const caseType = document.getElementById("caseType").value;
+            const matterAction = document.querySelector("input[name='matterAction']");
+            switch (caseType) {
+                case "Criminal":
+                    matterAction.placeholder = "COR";
+                    break;
+                case "Civil":
+                    matterAction.placeholder = "CIV";
+                    break;
+                case "Court of Appeal":
+                    matterAction.placeholder = "CACV/CACR";
+                    break;
+            }
+        }
+    </script>
+
+</body>
+
+<br /><br />
+
+
+<h3><u>Details of Hearing</u></h3>
+
+<!-- Date of Appearance -->
+<label for="dateOfAppearance">Date of Appearance:</label>
+<input type="date" id="dateOfAppearance" name="dateOfAppearance"> to
+<input type="date" id="dateOfAppearance" name="dateOfAppearance">
+
+</br></br>
+
+<!-- Case Type -->
+<label for="caseType">Case Type:</label>
+<select id="caseType" onchange="changePlaceholder()">
+    <option value="Criminal">Criminal</option>
+    <option value="Civil">Civil</option>
+    <option value="Court of Appeal">Court of Appeal</option>
+</select></br></br>
+
+
+<!-- Matter Number -->
+<label for="matterAction">Matter Number:</label>
+<input type="text" name="matterAction" maxlength="3" placeholder="CIV" required style="width: 3em;">
+<input type="text" name="caseNumber" pattern="[0-9]{4}" placeholder="1234" required style="width: 4em;">
+<input type="text" name="year" pattern="[0-9]{4}" placeholder="2023" required style="width: 4em;">
+
+</br> </br>
+
+
+<!-- Appearing Before -->
+<label for="appearingBefore">Appearing Before:</label>
+<select name="appearingBefore">
+    <option value="Judge">Justice</option>
+    <option value="Justice">Judge</option>
+    <option value="Master">Master</option>
+    <option value="Registrar">Registrar</option>
+    <option value="Master">Other</option>
+</select>
+<input type="text" name="justiceName" placeholder="e.g. Smith/Quinlan/Strk"><br>
+
+</br>
+<!-- Associated to the -->
+<label for="associatedTo">Associated to the </label>
+<select id="associatedTo" name="associatedTo" onchange="toggleOtherInput(this, 'otherAssociationInput')">
+    <option>Accused</option>
+    <option>Plaintiff</option>
+    <option>Defendant</option>
+    <option>Appellant (Court of Appeal)</option>
+    <option>Respondent (Court of Appeal)</option>
+    <option>Other</option>
+</select>
+<input type="text" id="otherAssociationInput" name="otherAssociationInput" placeholder="Please specify" style="display:none;">
+
+
+</br> </br>
+
+
+<!-- Reason for Appearance -->
+<label for="reasonForAppearance">Appearing to:</label>
+<select id="reasonForAppearance" name="reasonForAppearance" onchange="toggleOtherInput(this, 'otherReasonInput')">
+    <option>Appear as Council / Submit Evidence </option>
+    <option>Testify as an Expert Witness</option>
+    <option>Legal Instructor and/or Trainer to Council </option>
+    <option>Other</option>
+</select>
+<input type="text" id="otherReasonInput" name="otherReasonInput" placeholder="Please specify" style="display:none;"><br>
+
+</br> </br>
+
+<!-- Further Information --> 
+<b>
+    <label for="moreInfo">FURTHER DETAILS REQUIRED? </label><br>
+    <input type="radio" id="moreInfoYes" name="moreInfo" value="yes" onclick="toggleTextbox('moreInfoInput')">
+    <label for="moreInfoYes">Yes</label>
+    <input type="radio" id="moreInfoNo" name="moreInfo" value="no" onclick="hideTextbox('moreInfoInput')">
+    <label for="moreInfoNo">No</label><br>
+    <textarea id="moreInfoInput" rows="7" cols="50" style="display:none;" placeholder="Please include any details, further information, special requirements, etc. here for Court Technology Officer."></textarea>
+</b>
+<br><br>
+
+<!-- Submit & Reset buttons -->
+ <input type="submit" id="submit-button" value="Submit">
+<input type="reset" id="reset-button" value="Reset">
+
+
+</form>
+
+
+</body>
+<script>
+    function toggleTextbox(textareaId) {
+        document.getElementById(textareaId).style.display = 'block';
+    }
+
+    function hideTextbox(textareaId) {
+        document.getElementById(textareaId).style.display = 'none';
+    }
+</script>
+
+</html>
